@@ -72,7 +72,49 @@ func insertionSort(arr:Array<Int>) -> Array<Int> {
 	return auxArray
 }
 
-print(insertionSort(arr:[1,2,3,4,0,-1]))
+func pivot(arr:Array<Int>, lf:Int, rg:Int) -> (Array<Int>,Int) {
+	var auxArray:Array<Int> = arr
+	var piv:Int = lf
+	var i:Int = lf+1
+	var j:Int = rg
 
+	while j>=i {
+		if auxArray[piv] >= auxArray[i] {
+			i+=1
+		} else if auxArray[piv] < auxArray[j] {
+			j-=1
+		} else {
+			auxArray = swap(arr:auxArray, a:i, b:j)
+			j-=1
+			i+=1
+		}
+	}
+	auxArray = swap(arr:auxArray, a:piv, b:j)
+	piv = j
+	return (auxArray,piv)
+}
+
+func quickSortRec(arr:Array<Int>, lf:Int, rg:Int) -> Array<Int> {
+	var auxArray2:Array<Int> = arr
+	if lf<rg {
+		let pairPiv:(Array<Int>,Int) = pivot(arr:auxArray2, lf:lf, rg:rg)
+		let piv:Int = pairPiv.1
+		let pairArr:Array<Int> = pairPiv.0
+		auxArray2 = quickSortRec(arr:pairArr, lf:lf, rg:piv-1)
+		auxArray2 = quickSortRec(arr:pairArr, lf:piv+1, rg:rg)
+	}
+	return auxArray2
+}
+
+func quickSort(arr:Array<Int>) -> Array<Int> {
+	var auxArray:Array<Int> = arr
+	auxArray = quickSortRec(arr:auxArray, lf:0, rg:auxArray.count-1)
+	assert(arrayIsSorted(arr:auxArray), "Array is not sorted.")
+	return auxArray
+}
+
+print(quickSort(arr:[3,0,-1,9,-2,7,-9]))
+
+//print(insertionSort(arr:[1,2,3,4,0,-1]))
 //print(selectionSort(arr:[1,2,3,0,-9,-3]))
 //print(arrayIsSorted(arr:[0,1,2,3,4,5]))

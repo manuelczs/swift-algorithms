@@ -24,9 +24,55 @@ func arrayIsSorted(arr:Array<Int>) -> Bool {
 	return result
 }
 
-func 
+func minPosFrom(arr:Array<Int>, i:Int) -> Int {
+	var minp = i
+	var j = i+1
 
+	while j<arr.count {
+		if arr[j] <= arr[minp] {
+			minp = j
+			j += 1
+		} else {
+			j += 1
+		}
+	}
+	return minp
+}
 
+func selectionSort(arr:Array<Int>) -> Array<Int> {
+	var auxArray:Array<Int> = arr
+	var i = 0
+	var minp = 0
+	while i<auxArray.count {
+		minp = minPosFrom(arr:auxArray, i:i)
+		auxArray = swap(arr:auxArray, a:minp, b:i)
+		i+=1
+	}
+	assert(arrayIsSorted(arr:auxArray), "Array is not sorted.")
+	return auxArray
+}
 
+func insert(arr:Array<Int>, i:Int) -> Array<Int> {
+	var auxArray:Array<Int> = arr
+	var j = i
+	while j>0 && auxArray[j] <= auxArray[j-1] {
+		auxArray = swap(arr:auxArray, a:j, b:j-1)
+		j -= 1
+	}
+	return auxArray
+}
 
+func insertionSort(arr:Array<Int>) -> Array<Int> {
+	var auxArray:Array<Int> = arr
+	var i = 1
+	while i<auxArray.count {
+		auxArray = insert(arr:auxArray, i:i)
+		i += 1
+	}
+	return auxArray
+}
+
+print(insertionSort(arr:[1,2,3,4,0,-1]))
+
+//print(selectionSort(arr:[1,2,3,0,-9,-3]))
 //print(arrayIsSorted(arr:[0,1,2,3,4,5]))
